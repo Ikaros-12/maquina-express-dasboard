@@ -109,7 +109,3 @@
 .register-link p a:hover{
     text-decoration: underline;
 }
-
-.has-fixed-sidenav  {
-    left: 0px !important
-}

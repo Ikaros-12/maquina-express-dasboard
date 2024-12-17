@@ -67,4 +67,15 @@ export class UserService {
   getUsers()   {
     return this.http.get("https://localhost:44355/api/ClientStrive/GetAllEmployee")
   }
+
+  validar(token:string) :any {
+    let resultado:boolean=false;
+    const headers = new HttpHeaders();                
+    headers.set('Authorization','Bearer '+token);
+    return this.http.get("http://localhost:8090/users/validation",{ "headers" : headers , 'responseType' :'text'})
+    /*console.log(res.then(res=>{return res})+"pase")
+
+     resultado
+    */
+  }
 }

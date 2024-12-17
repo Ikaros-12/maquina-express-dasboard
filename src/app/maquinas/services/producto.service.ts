@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { Producto } from '../models/producto';
 import { Observable, of } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { environments } from '../../environments/environments';
+import { message } from '../models/message';
 
 @Injectable({
   providedIn: 'root'
@@ -39,7 +41,7 @@ export class ProductoService {
   listproductos(id:string):Observable<Producto[]>{
     //return of(this.productos)
 
-    return this.http.get<Producto[]>("http://localhost:8090/api/maquina/"+id+"/producto");
+    return this.http.get<Producto[]>(environments.baseUrl+environments.ruta_maquina+'/'+id+environments.prefijo_producto);
   }
 
   loadproducto(producto:Producto,id:string):Observable<Producto[]>{
@@ -54,7 +56,7 @@ export class ProductoService {
     const headers = new HttpHeaders();                
     headers.set('Content-Type','application/json'); 
 
-    return this.http.post<Producto[]>("http://localhost:8090/api/maquina/"+id+"/producto",data,{ "headers" : headers });
+    return this.http.post<Producto[]>(environments.baseUrl+environments.ruta_maquina+'/'+id+environments.prefijo_producto,data,{ "headers" : headers });
   }
 
 
@@ -74,8 +76,27 @@ export class ProductoService {
       'id':1
     }
 
-    var response=this.http.post('http://localhost:8090/pedido/pagar', data,{ "headers" : headers })
+    var response=this.http.post<String>('http://localhost:8090/pedido/pagar', data,{ "headers" : headers })
     response.subscribe((res) => console.log(res))
   }
   
+  guardar_imagen(image: Blob ,name:string){
+    const headers = new HttpHeaders();
+    headers.set("X-Requested-With", "XMLHttpRequests")                
+    .set('Content-Type','multipart/form-data');
+
+    const formdata = new FormData();
+    formdata.append("file", image );
+    formdata.append("name", name);
+
+    return this.http.post(environments.baseUrl+environments.ruta_cargar_imagen,formdata,{'responseType' :'text'});
+    
+  } 
+
+  borrar_producto(id:any){
+    const headers = new HttpHeaders();                
+    headers.set('Content-Type','application/json');
+
+    return this.http.delete<message>(environments.baseUrl+environments.ruta_producto+'/'+id,{ "headers" : headers })
+  }
 }

@@ -6,7 +6,7 @@
                 <input #imageInput
                                 type="file"
                                 accept="image/*"
-                                (change)="onselectFile($event)" style="color: transparent">
+                                (change)="onselectFile($event)" style=": transparent">
             </div>
 
 
@@ -49,12 +49,19 @@
     <div class="card">
         <div class="card-metrics card-metrics-toggle card-metrics-centered">
             <div class="row">
-                <div class="input-field col s2">
-                    <img height="60px" 
-                    src="../../../assets/{{producto.imagen}}" />
-
-                </div>
-
+                @if (producto.imagen=="" || producto.imagen==null){ 
+                    <div class="input-field col s2">
+                        <img height="60px" 
+                        src="../../../{{image_default}}" />
+    
+                    </div>                    }
+                @else{
+                    <div class="input-field col s2">
+                        <img height="60px" 
+                        src="http://localhost:8090/pedido/images/{{producto.imagen}}" />
+    
+                    </div>}
+                
                 <div class="input-field col s3">
                     <input value="{{producto.producto}}" id="first_name2" type="text" class="validate">
                     <label class="active" for="first_name2">Nombre</label>
@@ -68,10 +75,7 @@
                 <div class="input-field col s2">
                     <input value={{producto.cantidad}} id="first_name2" type="text" class="validate">
                     <label class="active" for="first_name2">cantidad</label>
-                </div>
-
-
-                
+                </div>-             
 
                 <div class="input-field col s2">
                     <input value="{{producto.fechavencimiento | date :'dd/MM/yyyy'}}" id="first_name2" type="text" class="validate">
@@ -79,20 +83,77 @@
                 </div>
 
                 <div class="input-field col s1">
-                    <button class="btn waves-effect waves-light z-depth-5" type="submit" name="action">
+                    <button class="btn waves-effect waves-light z-depth-5" type="submit" name="action" (click)="edit(producto.id)">
                         <i class="material-icons">edit</i>
                     </button>
                 </div>
                 <div class="input-field col s1">
-                    <button class="btn waves-effect waves-light z-depth-5" type="submit" name="action">
+                    <a class="btn waves-effect waves-light z-depth-5 modal-trigger" type="submit" name="action" href="#modal4" (click)="mover(producto.id)">
                         <i class="material-icons">delete</i>
-                    </button>
+                    </a>
                 </div>
 
             </div>
         </div>
 
+    </div>}}
+
+    <div id="modal2" class="modal modal-fixed-footer">
+        <div class="modal-content">
+            <h4>Agregar Producto</h4>
+            <form>
+                <div class="row">
+                    <div class="input-field col s8">
+                        <input placeholder="Placeholder" id="producto" type="text" class="validate">
+                        <label for="producto">Producto</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s2">
+                        <input placeholder="Placeholder" id="id" type="text" class="validate hide">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s2">
+                        <input value="{{producto.fechavencimiento | date :'dd/MM/yyyy'}}" id="first_name2" type="text" class="validate">
+                        <label class="active" for="first_name2">Fecha De vencimiento</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s6">
+                        <input placeholder="Placeholder" id="precio" type="text" class="validate">
+                        <label for="precio">Precio</label>
+                    </div>
+                    <div class="input-field col s6">
+                        <input placeholder="Placeholder" id="cantidad" type="text" class="validate">
+                        <label for="cantidad">Cantidad</label>
+                    </div>         
+                </div>
+                <div class="input-field col s2" >
+                    <img height="100px" src="{{image}}">
+                    <input #imageInput
+                                    type="file"
+                                    accept="image/*"
+                                    (change)="onselectFile($event)" style="color: transparent">
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <a class="modal-close waves-effect waves-green btn-flat">Agregar</a>
+            <a class="modal-close waves-effect waves-green btn-flat">Cancelar</a>
+        </div>
     </div>
-}
-}
+
+    <div id="modal4" class="modal modal-fixed-footer">
+        <div class="modal-content">
+            <h4>Borrar Producto</h4>
+            <p>Desea borrar el producto?</p>
+        </div>
+        <div class="modal-footer">
+            <a class="modal-close waves-effect waves-green btn-flat" (click)="borrar()">Borrar</a>
+            <a class="modal-close waves-effect waves-green btn-flat">Cancelar</a>
+        </div>        
+    </div>
+
+
 </div>
